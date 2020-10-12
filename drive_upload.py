@@ -20,4 +20,4 @@ class GoogleDriveUpload():
 path = os.path.join(os.path.dirname(__file__), 'file.txt')
 drive_service = GoogleDriveService()
 uploader = GoogleDriveUpload(drive_service)
-uploader.upload(path, '1YnTQoIuk8J6780G-kLKdNZkuVZAAin04')
+uploader.upload(path, '1job7FAIJqmDYlqStVqodk4q_DfEYZKBo')
