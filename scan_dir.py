@@ -8,20 +8,15 @@ class DirectoryScanner():
     print(f'{path.name}:{path.stat().st_ino} is a file inside {path.parent.name}')
 
   def scan(self, dir_path):
-    path = Path(dir_path)
-    if path.is_file():
-      self.file_found(path)
-      return
-    
-    queue = [path]
+    queue = [Path(dir_path)]
     while queue:
       parent = queue.pop()
-      for path in parent.iterdir():
-        if path.is_dir():
-          self.dir_found(path)
+      if parent.is_file():
+        self.file_found(parent)
+      elif parent.is_dir():
+        self.dir_found(parent)
+        for path in parent.iterdir():
           queue.append(path)
-        elif path.is_file():
-          self.file_found(path)
 
 if __name__ == "__main__":
   secret_path = '/Users/anupamghosh/workspace/fun/gdrive-upload/secrets/'

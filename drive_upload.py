@@ -22,7 +22,6 @@ class GoogleDriveUpload():
       'body': file_metadata,
       'fields': 'id'
     })
-    print(f'folder={folder}')
     return folder['id']
 
   def upload_file(self, path: str, drive_dir_id: str): # '1YnTQoIuk8J6780G-kLKdNZkuVZAAin04'
@@ -52,6 +51,13 @@ class GoogleDriveUpload():
     drive_dir_id = message.get('drive_dir')
     self.upload(path, drive_dir_id)
 
+  # temp function
+  @staticmethod
+  def upload_in_shared(path: str):
+    logging.info('Starting Upload')
+    GoogleDriveUpload().upload(path, '1P2KC1nZFjjySzJKQH6MoGVL_QXV4C3-e')
+    logging.info('Upload Done!')
+
 class GdriveUploadDirectory(DirectoryScanner):
   def __init__(self, uploader):
     self.uploader = uploader
@@ -63,8 +69,8 @@ class GdriveUploadDirectory(DirectoryScanner):
     return res
 
   def dir_found(self, path):
-    upload_to = self.get_drive_id(path.parent)
-    drive_id = self.uploader.create_dir(path.name, upload_to)
+    upload_to = self.get_drive_id(path.parent) # upload directory in parent's drive id
+    drive_id = self.uploader.create_dir(path.name, upload_to) # returns location id of path
     self.dir_ids[self.path_id(path)] = drive_id
     return drive_id
 
@@ -77,7 +83,8 @@ class GdriveUploadDirectory(DirectoryScanner):
     return upload_to
 
   def upload(self, upload_dir: str, upload_to: str):
-    self.dir_ids[self.path_id(Path(upload_dir))] = upload_to
+    parent_path = Path(upload_dir).parent
+    self.dir_ids[self.path_id(parent_path)] = upload_to
     super().scan(upload_dir)
 
 def main():

@@ -27,7 +27,7 @@ class GoogleDriveService():
       with open(token_path, 'wb') as token:
         pickle.dump(creds, token)
 
-    self.drive_service = build('drive', 'v3', credentials=creds)
+    self.drive_service = build('drive', 'v3', credentials=creds, cache_discovery=False)
 
   def get(self):
     return self.drive_service
