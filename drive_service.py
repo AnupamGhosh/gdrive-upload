@@ -6,7 +6,7 @@ from google.auth.transport.requests import Request
 
 class GoogleDriveService():
   def __init__(self):
-    SCOPES = ['https://www.googleapis.com/auth/drive']
+    SCOPES = ['https://www.googleapis.com/auth/drive.file']
     creds = None
     secrets_path = os.path.join(os.path.dirname(__file__), 'secrets')
     # The file token.pickle stores the user's access and refresh tokens, and is
