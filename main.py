@@ -9,7 +9,7 @@ def main(arglist):
   logging.basicConfig(format='%(funcName)s:%(lineno)d %(levelname)s %(message)s', level=logging.INFO)
   parser = argparse.ArgumentParser()
   parser.add_argument(
-    '-mode', dest='mode', default=RUN_MODE.UPLOAD, help='The mdoe to run Good drive uploader',
+    '--mode', dest='mode', default=RUN_MODE.UPLOAD, help='The mdoe to run Good drive uploader',
     choices=RUN_MODE.CHOICES
   )
   parser.add_argument(
@@ -30,8 +30,8 @@ def main(arglist):
     listener.listen()
 
 class RUN_MODE():
-  UPLOAD = 0
-  LISTENER = 1
+  UPLOAD = 'upload'
+  LISTENER = 'listener'
   CHOICES = (UPLOAD, LISTENER)
 
 if __name__ == "__main__":
