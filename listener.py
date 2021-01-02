@@ -2,17 +2,18 @@ import asyncio
 import logging
 import json
 
-import drive_upload
 
 class Listener:
   def __init__(self, ip, port, request_handler):
     self.port = port
     self.ip = ip
     self.received_msg = "ok"
+    self._server = None
     self.request_handler = request_handler
 
   async def _listen(self):
     server = await asyncio.start_server(self.handler, self.ip, self.port)
+    self._server = server
 
     addr = server.sockets[0].getsockname()
     logging.info(f'Serving on {addr}')
@@ -35,12 +36,12 @@ class Listener:
       logging.debug(f"Send: {message!r}")
       writer.write(self.received_msg.encode())
     except Exception as err:
-      writer.write(err)
+      # writer.write(err)
       logging.exception(err)
 
     await writer.drain()
     logging.debug("Close the connection")
-    writer.close()    
+    writer.close()
 
 
 
@@ -48,6 +49,7 @@ class Listener:
 def main():
   PORT = 4242
   IP = '127.0.0.1'
+  logging.basicConfig(format='%(funcName)s:%(lineno)d %(levelname)s %(message)s', level=logging.INFO)
   listener = Listener(IP, PORT, handler)
   listener.listen()
 
