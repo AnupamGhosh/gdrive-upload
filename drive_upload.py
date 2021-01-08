@@ -50,6 +50,7 @@ class GoogleDriveUpload():
     path = message.get('path')
     drive_dir_id = message.get('drive_dir')
     self.upload(path, drive_dir_id)
+    return 'Upload Done!'
 
   # temp function
   @staticmethod
@@ -88,6 +89,7 @@ class GdriveUploadDirectory(DirectoryScanner):
     super().scan(upload_dir)
 
 def main():
+  logging.basicConfig(format='%(funcName)s:%(lineno)d %(levelname)s %(message)s', level=logging.INFO)
   secret_path = os.path.join(os.path.dirname(__file__), 'secrets')
   uploader = GoogleDriveUpload()
   uploader.upload(secret_path, '1OM5tcSl0QnzDjNO6LMrVpgb8faS586pz')

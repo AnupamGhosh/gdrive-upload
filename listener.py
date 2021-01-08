@@ -7,14 +7,12 @@ class Listener:
   def __init__(self, ip, port, request_handler):
     self.port = port
     self.ip = ip
-    self.received_msg = "ok"
     self._server = None
     self.request_handler = request_handler
 
   async def _listen(self):
     server = await asyncio.start_server(self.handler, self.ip, self.port)
     self._server = server
-
     addr = server.sockets[0].getsockname()
     logging.info(f'Serving on {addr}')
 
@@ -29,21 +27,19 @@ class Listener:
     try:
       message = data.decode()
       message_dict = json.loads(message)
-      self.request_handler.handle_request(message_dict)
+      response = self.request_handler.handle_request(message_dict)
       addr = writer.get_extra_info('peername')
       logging.debug(f"Received {message!r} from {addr!r}")
 
       logging.debug(f"Send: {message!r}")
-      writer.write(self.received_msg.encode())
+      writer.write(response.encode())
     except Exception as err:
-      # writer.write(err)
+      writer.write(str(err).encode())
       logging.exception(err)
 
     await writer.drain()
     logging.debug("Close the connection")
     writer.close()
-
-
 
 
 def main():

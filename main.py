@@ -29,10 +29,10 @@ def main(arglist):
     listener = Listener(IP, PORT, uploader)
     listener.listen()
 
-class RUN_MODE():
+class RUN_MODE:
   UPLOAD = 'upload'
   LISTENER = 'listener'
   CHOICES = (UPLOAD, LISTENER)
 
 if __name__ == "__main__":
-    main(sys.argv)
+  main(sys.argv)
